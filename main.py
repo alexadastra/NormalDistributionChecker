@@ -3,6 +3,8 @@ import SamplesToDistributionCalculator
 import TheoreticalDistributionCalculator
 import ChiSquareCalculator
 import IsNormalDistributionDefiner
+import UserInterface
+import math
 
 import matplotlib.pyplot as plt
 
@@ -30,13 +32,16 @@ def main(h, significance, path):
     print('Chi_Square: ', chi_square)
 
     definer = IsNormalDistributionDefiner.IsNormalDistributionDefiner(degrees_=degree, significance_=significance)
+    distribution = ""
     if definer.is_normal_distribution(chi_square):
-        print('Distribution is normal')
+        distribution = u"нормальное"
     else:
-        print('Distribution is not normal')
-
+        distribution = "не нормальное"
+    print(distribution)
     plt.hist(actual_calculator.samples)
-    plt.show()
+    parts = path.split("/")
+    plt.savefig(parts[len(parts) - 1].split(".")[0] + ".jpg")
+    return [degree, round(average, 5), round(sd, 5), round(chi_square, 5), distribution]
 
 
 def is_normal(h, significance, path):
