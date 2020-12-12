@@ -9,9 +9,10 @@ import math
 import matplotlib.pyplot as plt
 
 
-def main(h, significance, path):
+def main(significance, path, h=-1):
     preprocessor = SamplePreprocessor.SamplePreprocessor(path_=path, h_=h)
     samples, degree = preprocessor.samples, preprocessor.degree
+    h = preprocessor.h  # redefine value in case we changed it inside preprocessor
     print('Degrees of freedom: ', degree)
 
     actual_calculator = SamplesToDistributionCalculator.SamplesToDistributionCalculator(samples)
@@ -44,9 +45,10 @@ def main(h, significance, path):
     return [degree, round(average, 5), round(sd, 5), round(chi_square, 5), distribution]
 
 
-def is_normal(h, significance, path):
+def is_normal(significance, path, h=-1):
     preprocessor = SamplePreprocessor.SamplePreprocessor(path_=path, h_=h)
     samples, degree = preprocessor.samples, preprocessor.degree
+    h = preprocessor.h
 
     actual_calculator = SamplesToDistributionCalculator.SamplesToDistributionCalculator(samples)
     average, sd = actual_calculator.calculate_normal_distribution_parameters()
@@ -66,7 +68,10 @@ def is_normal(h, significance, path):
 
 
 if __name__ == '__main__':
-    h_ = 0.001
     significance_ = 0.05
-    path_ = '/media/sf_virtualbox/Chi_v07a.txt'
-    main(h_, significance_, path_)
+    path_ = '/media/sf_virtualbox/Chi_v07c.txt'
+
+    #  for i in range(1, 1000):
+    #    if not is_normal(i / 1000, path_):
+    #        print("limit significance for accepting as normal:", (i - 1) / 1000)
+    #        break
