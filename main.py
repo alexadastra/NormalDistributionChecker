@@ -4,13 +4,12 @@ import TheoreticalDistributionCalculator
 import ChiSquareCalculator
 import IsNormalDistributionDefiner
 import UserInterface
-import math
 
 import matplotlib.pyplot as plt
 
 
-def main(significance, path, h=-1):
-    preprocessor = SamplePreprocessor.SamplePreprocessor(path_=path, h_=h)
+def main(significance, path, degree=-1):
+    preprocessor = SamplePreprocessor.SamplePreprocessor(path_=path, degree_=degree)
     samples, degree = preprocessor.samples, preprocessor.degree
     h = preprocessor.h  # redefine value in case we changed it inside preprocessor
     print('Degrees of freedom: ', degree)
@@ -45,8 +44,8 @@ def main(significance, path, h=-1):
     return [degree, round(average, 5), round(sd, 5), round(chi_square, 5), distribution]
 
 
-def is_normal(significance, path, h=-1):
-    preprocessor = SamplePreprocessor.SamplePreprocessor(path_=path, h_=h)
+def is_normal(significance, path, degree=-1):
+    preprocessor = SamplePreprocessor.SamplePreprocessor(path_=path, degree_=degree)
     samples, degree = preprocessor.samples, preprocessor.degree
     h = preprocessor.h
 
@@ -69,9 +68,9 @@ def is_normal(significance, path, h=-1):
 
 if __name__ == '__main__':
     significance_ = 0.05
-    path_ = '/media/sf_virtualbox/Chi_v07c.txt'
-
-    #  for i in range(1, 1000):
+    path_ = '/media/sf_virtualbox/Chi_v07a.txt'
+    main(significance=significance_, path=path_)
+    # for i in range(1, 1000):
     #    if not is_normal(i / 1000, path_):
     #        print("limit significance for accepting as normal:", (i - 1) / 1000)
     #        break
