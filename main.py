@@ -46,6 +46,7 @@ def main(significance, path, degree=-1):
     plt.plot(bins, best_fit_line)
     parts = path.split("/")
     plt.savefig(parts[len(parts) - 1].split(".")[0] + ".jpg")
+    plt.clf()
     return [degree, round(average, 5), round(sd, 5), round(chi_square, 5), distribution]
 
 
