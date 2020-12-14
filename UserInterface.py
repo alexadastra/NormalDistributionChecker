@@ -3,6 +3,7 @@ from tkinter import filedialog
 import main as algorithm
 import matplotlib as plt
 from PIL import ImageTk, Image
+from tkinter import messagebox as mb
 import os
 import sys
 
@@ -44,7 +45,7 @@ class UserInterface(object):
         self.main_window.wm_resizable(False, False)
 
         self.right_frame = Frame(self.main_window, bg="#e7e4e3")
-        self.right_frame.grid(row=1, column=2, rowspan=2, sticky=NSEW)
+        self.right_frame.grid(row=1, column=2, rowspan=3, sticky=NSEW)
 
         self.left_frame = Frame(self.main_window, bg="#e7e4e3")
         self.left_frame.grid(row=1, column=0, columnspan=2, sticky=NSEW)
@@ -72,6 +73,11 @@ class UserInterface(object):
         self.path_str.insert(0, u"Путь к файлу")
         self.path_str['state'] = "disabled"
 
+        self.significance_entry = Entry(self.main_window)
+        self.significance_entry.grid(row=3, column=0, sticky="we")
+        self.significance_entry.insert(0, u"значимость")
+        self.significance_entry.bind("<Button-1>", self.significance_entry.delete(0, END))
+
         ftype = [("Текстовые файлы", "*.txt")]
         dialog = filedialog.Open(filetypes=ftype)
         self.fl = ""
@@ -79,13 +85,20 @@ class UserInterface(object):
         def choose_file():
             self.fl = dialog.show()
             if self.fl != "":
+                try:
+                    significance = float(self.significance_entry.get())
+                except:
+                    mb.showerror("Ok", u"Введите правильную значимость")
+                    return 
+                if significance <= 0 or significance >= 1:  
+                    mb.showerror("Ok", u"Введите правильную значимость")
+                    return
                 self.path_str['state'] = "normal"
                 self.path_str.delete(0, END)
                 self.path_str.insert(0, self.fl)
                 self.path_str['state'] = "readonly"
-                h_ = 0.001
-                significance_ = 0.05
-                self.right_panel.set_params(algorithm.main(h_, significance_, self.fl))
+               
+                self.right_panel.set_params(algorithm.main(significance, self.fl))
                 parts = self.fl.split("/")
                 self.image = ImageTk.PhotoImage(file=parts[len(parts) - 1].split(".")[0] + ".jpg")
                 self.img = Label(self.main_window, image=self.image)
