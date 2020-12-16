@@ -78,6 +78,11 @@ class UserInterface(object):
         self.significance_entry.insert(0, u"значимость")
         self.significance_entry.bind("<Button-1>", self.significance_entry.delete(0, END))
 
+        self.degree_entry = Entry(self.main_window)
+        self.degree_entry.grid(row=3, column=1, sticky="we")
+        self.degree_entry.insert(0, u"степени свободы")
+        self.degree_entry.bind("<Button-1>", self.degree_entry.delete(0, END))
+
         ftype = [("Текстовые файлы", "*.txt")]
         dialog = filedialog.Open(filetypes=ftype)
         self.fl = ""
@@ -89,16 +94,19 @@ class UserInterface(object):
                     significance = float(self.significance_entry.get())
                 except:
                     mb.showerror("Ok", u"Введите правильную значимость")
-                    return 
-                if significance <= 0 or significance >= 1:  
-                    mb.showerror("Ok", u"Введите правильную значимость")
                     return
+                try:
+                    degrees = int(self.degree_entry.get())
+                except:
+                    degrees = -1
+                if degrees <= 0:  
+                    degrees = -1
                 self.path_str['state'] = "normal"
                 self.path_str.delete(0, END)
                 self.path_str.insert(0, self.fl)
                 self.path_str['state'] = "readonly"
                
-                self.right_panel.set_params(algorithm.main(significance, self.fl))
+                self.right_panel.set_params(algorithm.main(significance, self.fl, degrees))
                 parts = self.fl.split("/")
                 self.image = ImageTk.PhotoImage(file=parts[len(parts) - 1].split(".")[0] + ".jpg")
                 self.img = Label(self.main_window, image=self.image)
