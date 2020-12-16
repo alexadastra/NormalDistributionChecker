@@ -39,8 +39,10 @@ def main(significance, path, degree=-1):
     else:
         distribution = "не нормальное"
     print(distribution)
-    pdf = scipy.stats.norm.pdf(actual_calculator.samples, np.mean(actual_calculator.samples), np.std(actual_calculator.samples))
-    _, bins, _ = plt.hist(actual_calculator.samples,  edgecolor='black', linewidth=1.2, bins=preprocessor.sturgis_rule(actual_calculator.samples))
+    pdf = scipy.stats.norm.pdf(actual_calculator.samples, np.mean(actual_calculator.samples),
+                               np.std(actual_calculator.samples))
+    _, bins, _ = plt.hist(actual_calculator.samples, edgecolor='black', linewidth=1.2,
+                          bins=preprocessor.sturgis_rule(actual_calculator.samples))
     mu, sigma = scipy.stats.norm.fit(actual_calculator.samples)
     best_fit_line = scipy.stats.norm.pdf(bins, mu, sigma)
     plt.plot(bins, best_fit_line)
@@ -74,9 +76,5 @@ def is_normal(significance, path, degree=-1):
 
 if __name__ == '__main__':
     significance_ = 0.05
-    path_ = '/media/sf_virtualbox/Chi_v07a.txt'
-    main(significance=significance_, path=path_)
-    # for i in range(1, 1000):
-    #    if not is_normal(i / 1000, path_):
-    #        print("limit significance for accepting as normal:", (i - 1) / 1000)
-    #        break
+    path_ = '/media/sf_virtualbox/Chi_v07b.txt'
+    # main(significance=significance_, path=path_)

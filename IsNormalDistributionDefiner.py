@@ -3,7 +3,7 @@ from scipy.stats import chi2
 
 class IsNormalDistributionDefiner:
     def __init__(self, degrees_, significance_):
-        self.critical = chi2.ppf(1 - significance_, degrees_)
+        self.critical = chi2.ppf(1 - significance_, degrees_ - 1)
 
     def is_normal_distribution(self, chi_square):
         return chi_square <= self.critical
